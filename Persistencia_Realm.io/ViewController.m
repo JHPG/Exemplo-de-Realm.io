@@ -76,8 +76,26 @@
     if (!alunoSelecionado) {
         return;
     }
-    UIImage *foto = [UIImage imageNamed:@"smile"];
-    [[FotoSingleton sharedInstance] salvarFoto:foto comNome:alunoSelecionado.tia];
+    
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else{
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    imagePicker.delegate = self;
+    
+    [self presentViewController:imagePicker animated:YES completion:nil];
+    
+    //UIImage *foto = [UIImage imageNamed:@"smile"];
+    //[[FotoSingleton sharedInstance] salvarFoto:foto comNome:alunoSelecionado.tia];
+    [_tableView reloadData];
+}
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    [[FotoSingleton sharedInstance] salvarFoto:image comNome:alunoSelecionado.tia];
+    [self dismissViewControllerAnimated:YES completion:nil];
     [_tableView reloadData];
 }
 
@@ -114,7 +132,6 @@
         [alunoSingleton salvar:novoAluno];
         alunos = [alunoSingleton todosAlunos];
     }
-    
     
     [self cancelarEdicao];
     [_tableView reloadData];

@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ViewController : UIViewController
+                <UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *nomeTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tiaTextField;

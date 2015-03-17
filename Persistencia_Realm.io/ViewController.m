@@ -39,10 +39,11 @@
     
     UIBarButtonItem *addFotoItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(vincularFoto)];
     UIBarButtonItem *cancelarEdicao = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelarEdicao)];
+    UIBarButtonItem *excluirRegistro = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(excluirRegistro)];
     
 #warning Implementar botao de remocao
     
-    NSArray *itens = @[addFotoItem,cancelarEdicao];
+    NSArray *itens = @[addFotoItem,cancelarEdicao,excluirRegistro];
     [fotoToolBar setItems:itens];
     
 #warning Captura evento de rotacao de tela para recalcular posicao da toolbar
@@ -108,6 +109,14 @@
     [fotoToolBar removeFromSuperview];
     [_tableView deselectRowAtIndexPath:[_tableView
                                               indexPathForSelectedRow] animated: YES];
+}
+
+-(void) excluirRegistro{
+    RLMRealm *realm = [alunoSelecionado realm];
+    [realm beginWriteTransaction];
+    [realm deleteObject: alunoSelecionado];
+    [realm commitWriteTransaction];
+    [_tableView reloadData];
 }
 
 
